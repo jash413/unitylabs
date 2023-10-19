@@ -1,7 +1,6 @@
 const User = require('../models/user');
 const Catalog = require('../models/catalog');
 const Order = require('../models/order');
-const Product = require('../models/product');
 
 // Get a list of all sellers
 const getListOfSellers = async (req, res) => {
@@ -18,11 +17,12 @@ const getListOfSellers = async (req, res) => {
     res.status(500).json({ message: 'Failed to retrieve sellers' });
   }
 };
-
+ 
 // Get the catalog of a seller by seller_id
 const getSellerCatalog = async (req, res) => {
   try {
     const sellerId = req.params.seller_id;
+    console.log(sellerId);
     const catalog = await Catalog.findOne({ seller: sellerId });
 
     if (!catalog) {
@@ -49,11 +49,11 @@ const createOrder = async (req, res) => {
     }
 
     // Calculate the totalAmount for the order based on the selected items
-    const totalAmount = items.reduce((total, item) => {
-      return total + item.price;
-    }, 0);
+    // const totalAmount = items.reduce((total, item) => {
+    //   return total + item.price;
+    // }, 0);
 
-    const order = new Order({ buyer: buyerId, seller: sellerId, products: items, totalAmount });
+    const order = new Order({ buyer: buyerId, seller: sellerId, products: items });
 
     await order.save();
 

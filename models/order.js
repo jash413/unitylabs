@@ -26,7 +26,7 @@ const orderSchema = new mongoose.Schema({
   ],
   totalAmount: {
     type: Number,
-    required: true,
+    default: 0,
   },
   status: {
     type: String,
@@ -40,14 +40,21 @@ const orderSchema = new mongoose.Schema({
 });
 
 // Calculate totalAmount before saving the order
-orderSchema.pre('save', function (next) {
+orderSchema.pre('save', async function (next) {
   const order = this;
-  order.totalAmount = order.products.reduce((total, product) => {
-    const productPrice = product.product.price;
-    const productQuantity = product.quantity;
-    return total + productPrice * productQuantity;
-  }, 0);
+  let totalAmount = 0;
+
+  for (const product of order.products) {
+    // Assuming you have a 'Product' model defined
+    const productDetails = await mongoose.model('Product').findById(product.product);
+    if (productDetails) {
+      totalAmount += productDetails.price * product.quantity;
+    }
+  }
+
+  order.totalAmount = totalAmount;
   next();
 });
+
 
 module.exports = mongoose.model('Order', orderSchema);

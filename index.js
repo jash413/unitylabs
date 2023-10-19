@@ -20,9 +20,10 @@ const userRoutes = require('./routes/userRoutes');
 const sellerRoutes = require('./routes/sellerRoutes');
 const buyerRoutes = require('./routes/buyerRoutes');
 
+app.use(buyerRoutes);
 app.use(userRoutes);
 app.use(sellerRoutes);
-app.use(buyerRoutes);
+
 
 // Start the server
 const port = process.env.PORT || 3000;
