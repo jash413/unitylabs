@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const buyerController = require('../controllers/buyerController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const authMiddleware = require('../middleware/authMiddleware');
 
 // Get a list of all sellers
 router.get('/api/buyer/list-of-sellers', authMiddleware, buyerController.getListOfSellers);
