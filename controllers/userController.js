@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const passport = require('../middleware/passport');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 // User registration
 const registerUser = async (req, res) => {
@@ -13,7 +14,10 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const user = new User({ username, email, password, userType });
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({ username, email, password: hashedPassword, userType });
 
     await user.save();
 
@@ -23,7 +27,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: 'Registration failed' });
   }
 };
- 
+
 // User login using Passport.js and issue a JWT token
 const loginUser = (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
@@ -35,8 +39,7 @@ const loginUser = (req, res, next) => {
     }
 
     // If authentication is successful, create a JWT token
-    const token = jwt.sign({ userId: user._id, userType: user.userType }, 'unitylabs',
-      { expiresIn: '1d' });
+    const token = jwt.sign({ userId: user._id, userType: user.userType }, 'unitylabs', { expiresIn: '1d' });
 
     res.status(200).json({ token });
   })(req, res, next);

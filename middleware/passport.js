@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
+const bcrypt = require('bcrypt'); // Import bcrypt
 
 passport.use(
   new LocalStrategy(
@@ -15,7 +16,9 @@ passport.use(
           return done(null, false, { message: 'Invalid email or password' });
         }
 
-        if (user.password !== password) {
+        // Compare the hashed password from the database with the provided password
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
           return done(null, false, { message: 'Invalid email or password' });
         }
 
