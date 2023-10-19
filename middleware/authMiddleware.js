@@ -13,17 +13,13 @@ const authMiddleware = (req, res, next) => {
   try {
     // Verify the token and decode the user information
     const decoded = jwt.verify(token, secretKey);
-
+    console.log('Decoded token', decoded);
     // Attach the decoded user information to the request for use in other route handlers
     req.user = decoded;
 
     // Check if the user exists in the database (you may have different logic here)
-    User.findById(decoded.userId, (err, user) => {
-      if (err || !user) {
-        return res.status(401).json({ message: 'Unauthorized user' });
-      }
-
-      next(); // Continue to the next middleware or route handler
+    User.findById(req.user._id).then((user) => {
+      next();
     });
   } catch (ex) {
     console.error(ex);

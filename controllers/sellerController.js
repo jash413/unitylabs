@@ -6,9 +6,9 @@ const User = require('../models/user');
 // Create a new catalog for a seller with a list of items
 const createCatalog = async (req, res) => {
   try {
-    const sellerId = req.user._id;
+    const sellerId = req.user.userId;
     const { items, name } = req.body;
-
+    console.log(sellerId)
     // Check if a catalog already exists for the seller
     const existingCatalog = await Catalog.findOne({ seller: sellerId });
     if (existingCatalog) {
@@ -38,7 +38,7 @@ const createCatalog = async (req, res) => {
 // Retrieve the list of orders received by a seller
 const getSellerOrders = async (req, res) => {
   try {
-    const sellerId = req.user._id;
+    const sellerId = req.user.userId;
 
     // Find all orders that belong to the seller
     const orders = await Order.find({ seller: sellerId });

@@ -1,7 +1,7 @@
-const User = require('../models/User');
-const Catalog = require('../models/Catalog');
-const Order = require('../models/Order');
-const Product = require('../models/Product');
+const User = require('../models/user');
+const Catalog = require('../models/catalog');
+const Order = require('../models/order');
+const Product = require('../models/product');
 
 // Get a list of all sellers
 const getListOfSellers = async (req, res) => {
@@ -39,7 +39,7 @@ const getSellerCatalog = async (req, res) => {
 // Send a list of items to create an order for a seller
 const createOrder = async (req, res) => {
   try {
-    const buyerId = req.user._id; // Assuming you have user authentication middleware in place
+    const buyerId = req.user.userId; // Assuming you have user authentication middleware in place
     const sellerId = req.params.seller_id;
     const { items } = req.body;
 
