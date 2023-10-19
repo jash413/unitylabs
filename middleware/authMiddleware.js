@@ -17,7 +17,7 @@ const authMiddleware = (req, res, next) => {
     // Attach the decoded user information to the request for use in other route handlers
     req.user = decoded;
 
-    // Check if the user exists in the database (you may have different logic here)
+    // Check if the user exists in the database
     User.findById(req.user._id).then((user) => {
       next();
     });

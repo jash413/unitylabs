@@ -39,7 +39,7 @@ const getSellerCatalog = async (req, res) => {
 // Send a list of items to create an order for a seller
 const createOrder = async (req, res) => {
   try {
-    const buyerId = req.user.userId; // Assuming you have user authentication middleware in place
+    const buyerId = req.user.userId;
     const sellerId = req.params.seller_id;
     const { items } = req.body;
 
@@ -47,12 +47,6 @@ const createOrder = async (req, res) => {
     if (!seller || seller.userType !== 'seller') {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-
-    // Calculate the totalAmount for the order based on the selected items
-    // const totalAmount = items.reduce((total, item) => {
-    //   return total + item.price;
-    // }, 0);
-
     const order = new Order({ buyer: buyerId, seller: sellerId, products: items });
 
     await order.save();

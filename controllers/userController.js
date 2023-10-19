@@ -1,7 +1,6 @@
 const User = require('../models/user');
 const passport = require('../middleware/passport');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 
 // User registration
 const registerUser = async (req, res) => {
@@ -15,10 +14,6 @@ const registerUser = async (req, res) => {
     }
 
     const user = new User({ username, email, password, userType });
-
-    // Hash the password before saving the user
-    // const salt = await bcrypt.genSalt(10);
-    // user.password = await bcrypt.hash(password, salt);
 
     await user.save();
 

@@ -45,7 +45,6 @@ orderSchema.pre('save', async function (next) {
   let totalAmount = 0;
 
   for (const product of order.products) {
-    // Assuming you have a 'Product' model defined
     const productDetails = await mongoose.model('Product').findById(product.product);
     if (productDetails) {
       totalAmount += productDetails.price * product.quantity;
