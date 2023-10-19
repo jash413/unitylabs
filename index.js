@@ -18,11 +18,11 @@ mongoose.connect("mongodb+srv://jashmistry4444:SVjlOloq4CX6aNVE@cluster0.fran9pm
 // Define and use routes
 const userRoutes = require('./routes/userRoutes');
 const sellerRoutes = require('./routes/sellerRoutes');
-// const productRoutes = require('./routes/productRoutes');
+const buyerRoutes = require('./routes/buyerRoutes');
 
 app.use(userRoutes);
 app.use(sellerRoutes);
-// app.use(productRoutes);
+app.use(buyerRoutes);
 
 // Start the server
 const port = process.env.PORT || 3000;
